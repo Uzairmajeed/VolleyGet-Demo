@@ -39,5 +39,8 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.0'
     implementation 'com.github.bumptech.glide:glide:4.12.0'  // Use the latest version available
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'  // Add this line for annotation processing
+    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.facebook.fresco:fresco:2.5.0' // You can check for the latest version on Fresco's GitHub repository
+    implementation("io.coil-kt:coil:2.4.0")
 
 }

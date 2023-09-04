@@ -2,13 +2,13 @@ package com.facebook.volley_practice_get;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,6 +16,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,9 +28,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+
 public class MainActivity extends AppCompatActivity {
     private TextView mTextViewResult;
-    ImageView imageView;
+    SimpleDraweeView imageView;
     RequestQueue requestQueue;
     List<String> imageurls;
 
@@ -37,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         setContentView(R.layout.activity_main);
         imgGlide = findViewById(R.id.imgGlide);
         leftButton = findViewById(R.id.leftButton);
@@ -44,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mTextViewResult = findViewById(R.id.text_view_result);
         Button buttonParse = findViewById(R.id.button_parse);
         imageView = findViewById(R.id.action_image);
+
         requestQueue = Volley.newRequestQueue(this);
         buttonParse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,9 +122,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadimage(String image) {
-        Glide.with(this)
+
+        //Using Glide..
+       /* Glide.with(this)
                 .load(image)
-                .into(imageView);
+                .into(imageView);*/
+
+        //Using Picasso..
+       /* Picasso.get()
+                .load(image)
+                .into(imageView);*/
+
+        //Using Coil...
+      /*  ImageLoader imageLoader = new ImageLoader.Builder(this)
+                .build();
+
+        ImageRequest imageRequest = new ImageRequest.Builder(this)
+                .data(image)
+                .target(imageView)
+                .build();
+
+        imageLoader.enqueue(imageRequest);*/
+
+        //Using Fresco..
+// Set the image URI to load an image into the SimpleDraweeView
+        Uri imageUrlUri = Uri.parse(image);
+
+        // Create a DraweeController to load the image into the SimpleDraweeView
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(imageUrlUri)
+                .setAutoPlayAnimations(true) // Optional: Auto-play animations if the image is an animated GIF
+                .build();
+
+        // Set the controller to the SimpleDraweeView to load the image
+        imageView.setController(controller);
     }
 
 
